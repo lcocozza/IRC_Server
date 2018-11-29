@@ -18,18 +18,7 @@ static void end(void)
 #endif
 }
 
-void	arg(int argc, char **argv)
-{
-	if (argc != 3)
-	{
-		printf(	"Invalide Argument.\n"
-			"Usage: ./%s [ip] [port]\n", argv[0]);
-		exit(0);
-	}
-
-}
-
-int	init_connection(char **argv)
+int	init_connection()
 {
 	int bind_status;
 	int listen_status;

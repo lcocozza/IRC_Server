@@ -1,1 +1,1 @@
-gcc -o IRC_Client IRC_Client.c
+gcc -o IRC_Server IRC_Server.c

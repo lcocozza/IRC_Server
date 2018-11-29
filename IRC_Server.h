@@ -31,5 +31,4 @@ typedef struct in_addr IN_ADDR;
 #include <unistd.h>
 #include "ft.c"
 
-void	arg(int argc, char **argv);
-int	init_connection(char **argv);
+int	init_connection();

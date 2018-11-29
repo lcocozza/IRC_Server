@@ -1,11 +1,10 @@
-#include "IRC_Client.h"
+#include "IRC_Server.h"
 
 int	main(int argc, char **argv)
 {
 	int network_socket;
 
-	arg(argc, argv);
-	init_connection(argv);
+	init_connection();
 
 	return 0;
 }
