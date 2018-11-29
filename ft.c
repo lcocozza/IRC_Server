@@ -31,24 +31,26 @@ void	arg(int argc, char **argv)
 
 int	init_connection(char **argv)
 {
-	int connection_status;
-	SOCKET network_socket;
-	SOCKADDR_IN server_address = {0};
+	int bind_status;
+	int listen_status;
+	SOCKET listen_socket;
+	SOCKADDR_IN local_address = {0};
 
-	network_socket = socket(AF_INET, SOCK_STREAM, 0);
+	listen_socket = socket(AF_INET, SOCK_STREAM, 0);
 	
-	server_address.sin_addr.s_addr = htonl(INADDR_ANY);
-	server_address.sin_port = htons(6667);
-	server_address.sin_family = AF_INET;
+	local_address.sin_addr.s_addr = htonl(INADDR_ANY);
+	local_address.sin_port = htons(6667);
+	local_address.sin_family = AF_INET;
 
-	connection_status = bind(network_socket, (SOCKADDR *) &server_address, sizeof(server_address));
+	bind_status = bind(listen_socket, (SOCKADDR *) &local_address, sizeof(local_address));
 	if (connection_status == SOCKET_ERROR)
 	{	
 		perror("bind()");
 		exit(errno);
 	}
 	
-	if(listen(network_socket, 5) == SOCKET_ERROR)
+	listen_status = listen(listen_socket, 5);
+	if (listen_status == SOCKET_ERROR)
 	{
 		perror("listen()");
 		exit(errno);
@@ -58,7 +60,7 @@ int	init_connection(char **argv)
 	SOCKET client_socket;
 	int address_size = sizeof(client_address);
 
-	client_socket = accept(network_socket, (SOCKADDR *) &client_address, &address_size);
+	client_socket = accept(listen_socket, (SOCKADDR *) &client_address, &address_size);
 
 	if (client_socket == INVALID_SOCKET)
 	{
@@ -66,7 +68,7 @@ int	init_connection(char **argv)
 		exit(errno);
 	}
 
-	closesocket(network_socket);
+	closesocket(listen_socket);
 	closesocket(client_socket);
 	
 	return 0;
