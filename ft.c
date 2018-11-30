@@ -32,7 +32,7 @@ int	init_connection()
 	local_address.sin_family = AF_INET;
 
 	bind_status = bind(listen_socket, (SOCKADDR *) &local_address, sizeof(local_address));
-	if (connection_status == SOCKET_ERROR)
+	if (bind_status == SOCKET_ERROR)
 	{	
 		perror("bind()");
 		exit(errno);
