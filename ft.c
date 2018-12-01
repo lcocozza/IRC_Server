@@ -1,4 +1,4 @@
-static void init(void)
+static void	init(void)
 {
 #ifdef _WIN32
     WSADATA wsa;
@@ -11,14 +11,14 @@ static void init(void)
 #endif
 }
 
-static void end(void)
+static void	end(void)
 {
 #ifdef _WIN32
     WSACleanup();
 #endif
 }
 
-int	init_connection()
+int	init_connection(void)
 {
 	int bind_status;
 	int listen_status;
@@ -45,20 +45,27 @@ int	init_connection()
 		exit(errno);
 	}
 	
+	return listen_socket;
+}
+
+int	app(int socket)
+{
 	SOCKADDR_IN client_address = {0};
 	SOCKET client_socket;
 	int address_size = sizeof(client_address);
 
-	client_socket = accept(listen_socket, (SOCKADDR *) &client_address, &address_size);
+	client_socket = accept(socket, (SOCKADDR *) &client_address, &address_size);
 
 	if (client_socket == INVALID_SOCKET)
 	{
 		perror("accept()");
 		exit(errno);
-	}
-
-	closesocket(listen_socket);
-	closesocket(client_socket);
+	{
 	
 	return 0;
+}
+
+void	close_connection(int socket)
+{
+	closesocket(socket);
 }

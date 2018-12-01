@@ -3,8 +3,10 @@
 int	main(int argc, char **argv)
 {
 	int network_socket;
-
-	init_connection();
-
+	serv_config conf = {0};
+	
+	config(conf);
+	//network_socket = init_connection();
+	
 	return 0;
 }
