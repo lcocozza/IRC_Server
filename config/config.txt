@@ -1,0 +1,8 @@
+#config
+0
+
+#port
+6667
+
+#user_max
+5

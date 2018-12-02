@@ -45,27 +45,20 @@ int	init_connection(void)
 		exit(errno);
 	}
 	
-	return listen_socket;
-}
-
-int	app(int socket)
-{
 	SOCKADDR_IN client_address = {0};
 	SOCKET client_socket;
 	int address_size = sizeof(client_address);
 
-	client_socket = accept(socket, (SOCKADDR *) &client_address, &address_size);
+	client_socket = accept(listen_socket, (SOCKADDR *) &client_address, &address_size);
 
 	if (client_socket == INVALID_SOCKET)
 	{
 		perror("accept()");
 		exit(errno);
-	{
-	
-	return 0;
-}
+	}
 
-void	close_connection(int socket)
-{
-	closesocket(socket);
+	closesocket(listen_socket);
+	closesocket(client_socket);
+
+	return 0;
 }

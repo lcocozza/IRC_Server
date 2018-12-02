@@ -32,17 +32,6 @@ typedef struct in_addr IN_ADDR;
 #include "ft.c"
 #include "config_server.c"
 
-static int	init_connection(void);
-static void	close_connection(int socket);
-static void	init(void);
-static void	close(void);
-int	app(int socket);
-static int	config(struct serv_config conf);
+int	init_connection(void);
 void	init_config_file(void);
-
-typedef struct serv_config serv_config;
-struct serv_config{
-	
-	int port;
-	int nb_users;
-};
+int	config(void);

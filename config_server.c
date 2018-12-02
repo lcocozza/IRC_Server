@@ -14,7 +14,7 @@ void	init_config_file(void)
 	fclose(config);
 }
 
-int	config(struct serv_config conf)
+int	config(void)
 {
 	FILE* config = NULL;
 	
@@ -26,4 +26,6 @@ int	config(struct serv_config conf)
 	}
 
 	fclose(config);
+
+	return 0;
 }
