@@ -36,9 +36,11 @@ typedef struct in_addr IN_ADDR;
 #include "config_server.c"
 
 int	init_connection(void);
-void	init_config_file(void);
-int	config(serv_config *s_conf);
+//void	init_config_file(void);
+//int	config(serv_config *s_conf);
 void	title(void);
+int	app(int socket);
+void	closeconnection(int socket);
 
 void	title(void)
 {

@@ -1,4 +1,4 @@
-void	init_config_file(void)
+/*void	init_config_file(void)
 {
 	FILE* config = NULL;
 
@@ -42,4 +42,4 @@ int	config(serv_config *s_conf)
 	fclose(config);
 
 	return 0;
-}
+}*/
