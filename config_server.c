@@ -14,16 +14,30 @@ void	init_config_file(void)
 	fclose(config);
 }
 
-int	config(void)
+int	config(serv_config *s_conf)
 {
+	char str[10];
 	FILE* config = NULL;
-	
-	config = fopen("config/config.txt", "r");
+
+	config = fopen("config/config.txt", "r+");
 	if (config == NULL)
 	{
 		init_config_file();
-		config = fopen("config/config.txt", "r");
+		config = fopen("config/config.txt", "r+");
 	}
+	
+	rewind(config);
+	while (strcmp(str ,"#config\n") != 0)
+		fgets(str, sizeof(str), config);
+	
+	s_conf->config = 1;
+	//s_conf->config = atoi(fgets(str, sizeof(str), config));
+	if (s_conf->config == 1)
+	{	
+		printf("file configured\n");
+		return 0;
+	}
+	printf("file not configured\n");
 
 	fclose(config);
 

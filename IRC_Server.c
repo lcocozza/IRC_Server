@@ -2,7 +2,11 @@
 
 int	main(int argc, char **argv)
 {
-	config();
+	serv_config s_conf = {0};
+	
+	//config(&s_conf);
+	//system(CLRSRC);
+	//title();
 	init_connection();
 
 	return 0;
