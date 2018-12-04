@@ -57,6 +57,7 @@ int	app(int socket)
 	SOCKET client_socket;
 	int address_size = sizeof(client_address);
 	char *buffer = NULL;
+	int retour;
 	
 	buffer = malloc(sizeof(char *) * 1024);
 	if (buffer == NULL)
@@ -75,7 +76,12 @@ int	app(int socket)
 	}
 	
 	buffer = "NIQUE TA MERE\n";
-	send(client_socket, buffer, sizeof(strlen(buffer) + 1), 0);
+	retour = send(client_socket, buffer, sizeof(strlen(buffer) + 1), 0);
+	if (retour == SOCKET_ERROR)
+	{
+		perror("send()");
+		exit(errno);
+	}
 
 	free(buffer);
 	return client_socket;
