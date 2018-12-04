@@ -56,10 +56,9 @@ int	app(int socket)
 	SOCKADDR_IN client_address = {0};
 	SOCKET client_socket;
 	int address_size = sizeof(client_address);
-	char *buffer = NULL;
+	char buffer[1024];
 	int retour;
 	
-	buffer = malloc(sizeof(char *) * 1024);
 	if (buffer == NULL)
 	{
 		printf("malloc(buffer)");
@@ -75,8 +74,8 @@ int	app(int socket)
 		exit(errno);
 	}
 	
-	buffer = "NIQUE TA MERE\n";
-	retour = send(client_socket, buffer, sizeof(strlen(buffer) + 1), 0);
+	strcpy(buffer, "NIQUE TA MERE");
+	retour = send(client_socket, &buffer, sizeof(buffer), 0);
 	if (retour == SOCKET_ERROR)
 	{
 		perror("send()");
