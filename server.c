@@ -83,7 +83,6 @@ int	app(int socket)
 		exit(errno);
 	}
 
-	free(buffer);
 	return client_socket;
 }
 

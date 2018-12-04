@@ -3,7 +3,7 @@
 void	title(void)
 {
 	system(CLRSRC);
-	printf(	"88888888888888b.  .d8888b.        .d8888b.\n"
+	printf(	"\n88888888888888b.  .d8888b.        .d8888b.\n"
   		"  888  888   Y88bd88P  Y88b      d88P  Y88b\n"
   		"  888  888    888888    888      Y88b.\n"
   		"  888  888   d88P888              'Y888b.   .d88b. 888d888888  888 .d88b. 888d888\n"
