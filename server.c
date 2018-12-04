@@ -1,3 +1,5 @@
+#include "header.h"
+
 static void	init(void)
 {
 #ifdef _WIN32
@@ -35,6 +37,7 @@ int	init_connection(void)
 	if (bind_status == SOCKET_ERROR)
 	{	
 		perror("bind()");
+		closesocket(listen_socket);
 		exit(errno);
 	}
 	
@@ -42,6 +45,7 @@ int	init_connection(void)
 	if (listen_status == SOCKET_ERROR)
 	{
 		perror("listen()");
+		closesocket(listen_socket);
 		exit(errno);
 	}
 	return listen_socket;
@@ -52,16 +56,21 @@ int	app(int socket)
 	SOCKADDR_IN client_address = {0};
 	SOCKET client_socket;
 	int address_size = sizeof(client_address);
+	char buffer[1024];
 
 	client_socket = accept(socket, (SOCKADDR *) &client_address, &address_size);
 
 	if (client_socket == INVALID_SOCKET)
 	{
 		perror("accept()");
+		closesocket(client_socket);
 		exit(errno);
 	}
+	
+	buffer = "NIQUE TA MERE\n";
+	send(client_socket, buffer, sizeof(strlen(buffer) + 1), 0);
 
-	return 0;
+	return client_socket;
 }
 
 void	closeconnection(int socket)

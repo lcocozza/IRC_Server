@@ -1,4 +1,6 @@
-/*void	init_config_file(void)
+#include "header.h"
+
+void	init_config_file(void)
 {
 	FILE* config = NULL;
 
@@ -8,7 +10,7 @@
 			"0\n\n"
 			"#port\n"
 			"6667\n\n"
-			"#user_max\n"
+			"#backlog\n"
 			"5\n");
 
 	fclose(config);
@@ -30,8 +32,7 @@ int	config(serv_config *s_conf)
 	while (strcmp(str ,"#config\n") != 0)
 		fgets(str, sizeof(str), config);
 	
-	s_conf->config = 1;
-	//s_conf->config = atoi(fgets(str, sizeof(str), config));
+	s_conf->config = atoi(fgets(str, sizeof(str), config));
 	if (s_conf->config == 1)
 	{	
 		printf("file configured\n");
@@ -42,4 +43,4 @@ int	config(serv_config *s_conf)
 	fclose(config);
 
 	return 0;
-}*/
+}
