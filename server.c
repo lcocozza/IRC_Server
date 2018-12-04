@@ -56,9 +56,14 @@ int	app(int socket)
 	SOCKADDR_IN client_address = {0};
 	SOCKET client_socket;
 	int address_size = sizeof(client_address);
-	char *buffer;
+	char *buffer = NULL;
 	
 	buffer = malloc(sizeof(char *) * 1024);
+	if (buffer == NULL)
+	{
+		printf("malloc(buffer)");
+		exit(errno);
+	}
 
 	client_socket = accept(socket, (SOCKADDR *) &client_address, &address_size);
 
