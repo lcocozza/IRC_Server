@@ -1,1 +1,1 @@
-gcc -o IRC_Server *.c
+gcc *.c -lpthread -o IRC_Server

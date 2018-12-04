@@ -32,6 +32,7 @@ typedef struct in_addr IN_ADDR;
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <pthread.h>
 
 typedef struct serv_config serv_config;
 struct	serv_config {
