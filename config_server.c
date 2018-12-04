@@ -11,7 +11,9 @@ void	init_config_file(void)
 			"#port\n"
 			"6667\n\n"
 			"#backlog\n"
-			"5\n");
+			"5\n\n"
+			"#max_client\n"
+			"10\n\n");
 
 	fclose(config);
 }

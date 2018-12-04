@@ -51,40 +51,6 @@ int	init_connection(void)
 	return listen_socket;
 }
 
-int	app(int socket)
-{
-	SOCKADDR_IN client_address = {0};
-	SOCKET client_socket;
-	int address_size = sizeof(client_address);
-	char buffer[1024];
-	int retour;
-	
-	if (buffer == NULL)
-	{
-		printf("malloc(buffer)");
-		exit(errno);
-	}
-
-	client_socket = accept(socket, (SOCKADDR *) &client_address, &address_size);
-
-	if (client_socket == INVALID_SOCKET)
-	{
-		perror("accept()");
-		closesocket(client_socket);
-		exit(errno);
-	}
-	
-	strcpy(buffer, "NIQUE TA MERE");
-	retour = send(client_socket, &buffer, sizeof(buffer), 0);
-	if (retour == SOCKET_ERROR)
-	{
-		perror("send()");
-		exit(errno);
-	}
-
-	return client_socket;
-}
-
 void	closeconnection(int socket)
 {
 	closesocket(socket);

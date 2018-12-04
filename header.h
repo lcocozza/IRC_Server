@@ -40,11 +40,12 @@ struct	serv_config {
 	int config;
 	int port;
 	int backlog;
+	int max_client;
 };
 
 int	init_connection(void);
 void	init_config_file(void);
 int	config(serv_config *s_conf);
 void	title(void);
-int	app(int socket);
+int	app(int socket, serv_config *s_conf);
 void	closeconnection(int socket);
