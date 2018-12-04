@@ -56,7 +56,9 @@ int	app(int socket)
 	SOCKADDR_IN client_address = {0};
 	SOCKET client_socket;
 	int address_size = sizeof(client_address);
-	char buffer[1024];
+	char *buffer;
+	
+	buffer = malloc(sizeof(char *) * 1024);
 
 	client_socket = accept(socket, (SOCKADDR *) &client_address, &address_size);
 
@@ -70,6 +72,7 @@ int	app(int socket)
 	buffer = "NIQUE TA MERE\n";
 	send(client_socket, buffer, sizeof(strlen(buffer) + 1), 0);
 
+	free(buffer);
 	return client_socket;
 }
 
