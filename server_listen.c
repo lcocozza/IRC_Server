@@ -51,7 +51,7 @@ int	init_connection(void)
 	return listen_socket;
 }
 
-void	closeconnection(int socket)
+void	closeconnection(SOCKET socket)
 {
 	closesocket(socket);
 }
