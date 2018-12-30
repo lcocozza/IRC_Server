@@ -1,0 +1,12 @@
+#config
+0
+
+#port
+6667
+
+#backlog
+5
+
+#max_client
+10
+
