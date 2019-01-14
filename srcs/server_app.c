@@ -6,6 +6,7 @@ int	app(int master_socket, serv_config *s_conf)
 	SOCKET new_socket;
 	int address_size = sizeof(client_address);
 	char buffer[1024];
+	char msg[1000];
 	int *clients_socket = NULL;
 	int statu = 0;
 	int fdmax;
@@ -36,7 +37,7 @@ int	app(int master_socket, serv_config *s_conf)
 				fdmax = sd;
 		}
 
-		if (select(fdmax + 1, &readfs, NULL, NULL, NULL) == -1)
+		if (select(fdmax + 1, &readfs, NULL, NULL, NULL) == SOCKET_ERROR)
 		{
 			perror("select()");
 			exit(errno);
@@ -44,8 +45,11 @@ int	app(int master_socket, serv_config *s_conf)
 
 		if (FD_ISSET(STDIN_FILENO, &readfs))
 		{
-			fgets(buffer, sizeof(char) * 1024, stdin);
+			fgets(msg, sizeof(char) * 1000, stdin);
+			strcpy(buffer, "[Server] ");
+			strcat(buffer, msg);
 			send_toall(clients_socket, -1, s_conf->max_client, buffer);
+			cleanBuffer(buffer);
 		}
 		else if (FD_ISSET(master_socket, &readfs))
 		{
@@ -87,9 +91,9 @@ int	app(int master_socket, serv_config *s_conf)
 				if (FD_ISSET(clients_socket[i], &readfs))
 				{
 					statu = receive_message(clients_socket[i], buffer);
-					if (statu < 0)
+					if (statu == 0)
 					{
-						printf("Disconnect\n");
+						printf("client %d isconnect\n", clients_socket[i]);
 						shutdown(clients_socket[i], 2);
 						closesocket(clients_socket[i]);
 						clients_socket[i] = 0;
@@ -97,28 +101,24 @@ int	app(int master_socket, serv_config *s_conf)
 					}
 					else
 					{
-						printf("%s\n", buffer);
+						send_toall(clients_socket, clients_socket[i], s_conf->max_client, buffer);
 						cleanBuffer(buffer);
 					}
 				}
 			}
 		}
 	}
-
 	return *clients_socket;
 }
 
-void	send_toall(int *clients_socket, int socket, int max, char *buffer)
+void	send_toall(int *clients_socket, int actual_socket, int max, char *buffer)
 {
 	int i;
 
 	for (i = 0; clients_socket[i] < max; i++)
 	{
-		if (clients_socket[i] != socket && clients_socket[i] != 0)
-		{
-			printf("envois a socket = %d\n", clients_socket[i]);
+		if (clients_socket[i] != actual_socket && clients_socket[i] != 0)
 			send_message(clients_socket[i], buffer);
-		}
 	}
 	cleanBuffer(buffer);
 }
