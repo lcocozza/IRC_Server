@@ -114,7 +114,7 @@ void	send_toall(int *clients_socket, int socket, int max, char *buffer)
 
 	for (i = 0; clients_socket[i] < max; i++)
 	{
-		if (clients_socket[i] != socket)
+		if (clients_socket[i] != socket && clients_socket[i] != 0)
 		{
 			printf("envois a socket = %d\n", clients_socket[i]);
 			send_message(clients_socket[i], buffer);
