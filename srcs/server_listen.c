@@ -1,8 +1,8 @@
 #include "header.h"
 
+#ifdef _WIN32
 static void	init(void)
 {
-#ifdef _WIN32
     WSADATA wsa;
     int err = WSAStartup(MAKEWORD(2, 2), &wsa);
     if(err < 0)
@@ -10,15 +10,15 @@ static void	init(void)
         puts("WSAStartup failed !");
         exit(EXIT_FAILURE);
     }
-#endif
 }
+#endif
 
+#ifdef _WIN32
 static void	end(void)
 {
-#ifdef _WIN32
     WSACleanup();
-#endif
 }
+#endif
 
 int	init_connection(void)
 {
