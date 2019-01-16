@@ -14,6 +14,6 @@ all:
 	gcc $(FLAGS) $(SRC) -o IRC_Server -I includes/
 
 clean:
-	rm IRC_Serveur
+	rm IRC_Server
 
 re: clean all

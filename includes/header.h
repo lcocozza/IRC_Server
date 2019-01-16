@@ -54,5 +54,5 @@ int	app(SOCKET socket, serv_config *s_conf);
 int	receive_message(SOCKET socket, char *buffer);
 void	send_message(SOCKET socket, char *buffer);
 void	closeconnection(SOCKET socket);
-void	cleanBuffer(char *buffer);
+void	cleanMsg(char *buffer, char *msg);
 void	send_toall(int *clients_socket, int socket, int max, char *buffer);

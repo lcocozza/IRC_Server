@@ -37,7 +37,7 @@ int	app(int master_socket, serv_config *s_conf)
 				fdmax = sd;
 		}
 
-		if (select(fdmax + 1, &readfs, NULL, NULL, NULL) == SOCKET_ERROR)
+		if (select(fdmax + 1, &readfs, NULL, NULL, NULL) == -1)
 		{
 			perror("select()");
 			exit(errno);
@@ -48,8 +48,8 @@ int	app(int master_socket, serv_config *s_conf)
 			fgets(msg, sizeof(char) * 1000, stdin);
 			strcpy(buffer, "[Server] ");
 			strcat(buffer, msg);
-			send_toall(clients_socket, -1, s_conf->max_client, buffer);
-			cleanBuffer(buffer);
+			send_toall(clients_socket, 0, s_conf->max_client, buffer);
+			cleanMsg(buffer, msg);
 		}
 		else if (FD_ISSET(master_socket, &readfs))
 		{
@@ -68,7 +68,7 @@ int	app(int master_socket, serv_config *s_conf)
 				{
 					strcpy(buffer, "Connection error: no more client can be connected.\n");
 					send_message(new_socket, buffer);
-					cleanBuffer(buffer);
+					cleanMsg(buffer, msg);
 					shutdown(new_socket, 2);
 					closesocket(new_socket);
 					break;
@@ -79,7 +79,7 @@ int	app(int master_socket, serv_config *s_conf)
 					printf("New client connected with socket %d from %s:%d, in slot %d\n", clients_socket[i], inet_ntoa(client_address.sin_addr), ntohs(client_address.sin_port), i);
 					strcpy(buffer, "Success connecting.\n");
 					send_message(clients_socket[i], buffer);
-					cleanBuffer(buffer);
+					cleanMsg(buffer, msg);
 					break;
 				}
 			}
@@ -93,16 +93,17 @@ int	app(int master_socket, serv_config *s_conf)
 					statu = receive_message(clients_socket[i], buffer);
 					if (statu == 0)
 					{
-						printf("client %d isconnect\n", clients_socket[i]);
+						printf("Socket %d Disconnect\n", clients_socket[i]);
 						shutdown(clients_socket[i], 2);
 						closesocket(clients_socket[i]);
 						clients_socket[i] = 0;
-
+						break;
 					}
 					else
 					{
 						send_toall(clients_socket, clients_socket[i], s_conf->max_client, buffer);
-						cleanBuffer(buffer);
+						cleanMsg(buffer, msg);
+						break;
 					}
 				}
 			}
@@ -120,7 +121,6 @@ void	send_toall(int *clients_socket, int actual_socket, int max, char *buffer)
 		if (clients_socket[i] != actual_socket && clients_socket[i] != 0)
 			send_message(clients_socket[i], buffer);
 	}
-	cleanBuffer(buffer);
 }
 
 void	send_message(SOCKET socket, char *buffer)
@@ -145,10 +145,11 @@ int	receive_message(SOCKET socket, char *buffer)
 	return statu;
 }
 
-void cleanBuffer(char *buffer)
+void cleanMsg(char *buffer, char *msg)
 {
-	int i;
-	for (i = 1; buffer[i] != '\0'; i++)
-		buffer[i - 1] = '\0';
-	buffer[i] = '\0';
+	/*int i;
+	for (i = 0; buffer[i] != '\0'; i++)
+		buffer[i] = 0;*/
+	strcpy(buffer, "");
+	strcpy(msg, "");
 }
