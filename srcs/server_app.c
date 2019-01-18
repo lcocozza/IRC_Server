@@ -5,8 +5,6 @@ int	app(int master_socket, serv_config *s_conf)
 	SOCKADDR_IN client_address = {0};
 	SOCKET new_socket;
 	int address_size = sizeof(client_address);
-	char buffer[1024];
-	char msg[1000];
 	int *clients_socket = NULL;
 	int statu = 0;
 	int fdmax;
@@ -22,6 +20,10 @@ int	app(int master_socket, serv_config *s_conf)
 
 	while (1)
 	{
+
+		char *buffer = malloc(sizeof(char) * 1024);
+		char *msg = malloc(sizeof(char) * 1000);
+
 		FD_ZERO(&readfs);
 		FD_SET(STDIN_FILENO, &readfs);
 		FD_SET(master_socket, &readfs);
@@ -150,6 +152,6 @@ void cleanMsg(char *buffer, char *msg)
 	/*int i;
 	for (i = 0; buffer[i] != '\0'; i++)
 		buffer[i] = 0;*/
-	strcpy(buffer, "");
-	strcpy(msg, "");
+	free(buffer);
+	free(msg);
 }
