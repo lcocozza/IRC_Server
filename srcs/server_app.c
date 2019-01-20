@@ -1,6 +1,7 @@
-#include "header.h"
+#include "sys_incl.h"
+#include "ft.h"
 
-int	app(int master_socket, serv_config *s_conf)
+int	app(SOCKET master_socket, serv_config *s_conf)
 {
 	SOCKADDR_IN client_address = {0};
 	SOCKET new_socket;
@@ -129,7 +130,7 @@ void	send_message(SOCKET socket, char *buffer)
 {
 	int i;
 
-	for (i = 0; buffer[i] != '\n'; i++) ;
+	for (i = 0; buffer[i] != '\n' && buffer[i] != '\0'; i++) ;
 	buffer[i] = '\0';
 
 	if (send(socket, buffer, strlen(buffer), 0) < 0)

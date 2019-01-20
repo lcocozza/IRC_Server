@@ -11,7 +11,7 @@ SRC=	srcs/server_app.c \
 	srcs/display.c
 
 all:
-	gcc $(FLAGS) $(SRC) -o IRC_Server -I includes/
+	gcc $(FLAGS) $(SRC) -o IRC_Server -I includes/ -g
 
 clean:
 	rm IRC_Server

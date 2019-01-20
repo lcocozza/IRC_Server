@@ -1,4 +1,5 @@
-#include "header.h"
+#include "sys_incl.h"
+#include "ft.h"
 
 #ifdef _WIN32
 static void	init(void)
