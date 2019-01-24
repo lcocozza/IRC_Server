@@ -36,23 +36,11 @@ int	init_connection(void)
 
 	bind_status = bind(listen_socket, (SOCKADDR *) &local_address, sizeof(local_address));
 	if (bind_status == SOCKET_ERROR)
-	{	
-		perror("bind()");
-		closesocket(listen_socket);
-		exit(errno);
-	}
+		get_error("bind()", 1, listen_socket);
 	
 	listen_status = listen(listen_socket, 5);
 	if (listen_status == SOCKET_ERROR)
-	{
-		perror("listen()");
-		closesocket(listen_socket);
-		exit(errno);
-	}
-	return listen_socket;
-}
+		get_error("listen()", 1, listen_socket);
 
-void	closeconnection(SOCKET socket)
-{
-	closesocket(socket);
+	return listen_socket;
 }

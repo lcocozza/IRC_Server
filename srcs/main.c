@@ -12,7 +12,7 @@ int	main(int argc, char **argv)
 	title();
 	socket = init_connection();
 	socket = app(socket, &s_conf);
-	closeconnection(socket);
+	closesocket(socket);
 
 	return 0;
 }

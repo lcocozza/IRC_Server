@@ -41,10 +41,7 @@ int	app(SOCKET master_socket, serv_config *s_conf)
 		}
 
 		if (select(fdmax + 1, &readfs, NULL, NULL, NULL) == -1)
-		{
-			perror("select()");
-			exit(errno);
-		}
+			get_error("select()", 1, -1);
 
 		if (FD_ISSET(STDIN_FILENO, &readfs))
 		{
@@ -59,11 +56,7 @@ int	app(SOCKET master_socket, serv_config *s_conf)
 			new_socket = accept(master_socket, (SOCKADDR *)&client_address, &address_size);
 
 			if (new_socket == INVALID_SOCKET)
-			{
-				perror("accept()");
-				closesocket(new_socket);
-				exit(errno);
-			}
+				get_error("accept()", 1, new_socket);
 
 			for (i = 0; i < s_conf->max_client; i++)
 			{
@@ -113,45 +106,4 @@ int	app(SOCKET master_socket, serv_config *s_conf)
 		}
 	}
 	return *clients_socket;
-}
-
-void	send_toall(int *clients_socket, int actual_socket, int max, char *buffer)
-{
-	int i;
-
-	for (i = 0; clients_socket[i] < max; i++)
-	{
-		if (clients_socket[i] != actual_socket && clients_socket[i] != 0)
-			send_message(clients_socket[i], buffer);
-	}
-}
-
-void	send_message(SOCKET socket, char *buffer)
-{
-	int i;
-
-	for (i = 0; buffer[i] != '\n' && buffer[i] != '\0'; i++) ;
-	buffer[i] = '\0';
-
-	if (send(socket, buffer, strlen(buffer), 0) < 0)
-	{
-		perror("send()");
-		exit(errno);
-	}
-}
-
-int	receive_message(SOCKET socket, char *buffer)
-{
-	int statu = 0;
-	if ((statu = recv(socket, buffer, 1024, 0)) < 0)
-		perror("recv()");
-	return statu;
-}
-
-void cleanMsg(char *buffer, char *msg)
-{
-	memset(buffer, 0, strlen(buffer));
-	memset(msg, 0, strlen(msg));
-	free(buffer);
-	free(msg);
 }
