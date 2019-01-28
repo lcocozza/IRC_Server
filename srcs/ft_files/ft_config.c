@@ -19,10 +19,10 @@ void	init_config_file(void)
 	fclose(config);
 }
 
-int	config(serv_config *s_conf)
+int	config(t_serv_config *s_conf)
 {
 	char str[10];
-	FILE* config = NULL;
+	FILE *config = NULL;
 
 	config = fopen("config/config.txt", "r+");
 	if (config == NULL)

@@ -1,27 +1,7 @@
 #include "sys_incl.h"
 #include "ft.h"
 
-#ifdef _WIN32
-static void	init(void)
-{
-    WSADATA wsa;
-    int err = WSAStartup(MAKEWORD(2, 2), &wsa);
-    if(err < 0)
-    {
-        puts("WSAStartup failed !");
-        exit(EXIT_FAILURE);
-    }
-}
-#endif
-
-#ifdef _WIN32
-static void	end(void)
-{
-    WSACleanup();
-}
-#endif
-
-int	init_connection(void)
+int	init_connection(t_serv_config *s_conf)
 {
 	int bind_status;
 	int listen_status;
@@ -31,7 +11,7 @@ int	init_connection(void)
 	listen_socket = socket(AF_INET, SOCK_STREAM, 0);
 	
 	local_address.sin_addr.s_addr = htonl(INADDR_ANY);
-	local_address.sin_port = htons(6667);
+	local_address.sin_port = htons(s_conf->port);
 	local_address.sin_family = AF_INET;
 
 	bind_status = bind(listen_socket, (SOCKADDR *) &local_address, sizeof(local_address));

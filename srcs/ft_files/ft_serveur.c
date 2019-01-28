@@ -1,7 +1,7 @@
 #include "sys_incl.h"
 #include "ft.h"
 
-int	app(SOCKET master_socket, serv_config *s_conf)
+int	app(SOCKET master_socket, t_serv_config *s_conf)
 {
 	SOCKADDR_IN client_address = {0};
 	SOCKET new_socket;
