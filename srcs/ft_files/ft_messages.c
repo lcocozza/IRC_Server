@@ -17,7 +17,7 @@ void	send_message(SOCKET socket, char *buffer)
 	int i;
 
 	for (i = 0; buffer[i] != '\n' && buffer[i] != '\0'; i++) ;
-	buffer[i] = '\0';
+		buffer[i] = '\0';
 
 	if (send(socket, buffer, strlen(buffer), 0) < 0)
 		get_error("send()", 1, -1);
@@ -33,9 +33,7 @@ int	receive_message(SOCKET socket, char *buffer)
 
 void cleanMsg(char *buffer, char *msg)
 {
-	memset(buffer, 0, strlen(buffer));
-	memset(msg, 0, strlen(msg));
-	free(buffer);
-	free(msg);
+	memset(buffer, 0, 1024);
+	memset(msg, 0, 1000);
 }
 

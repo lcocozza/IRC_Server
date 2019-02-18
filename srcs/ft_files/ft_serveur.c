@@ -7,6 +7,8 @@ int	app(SOCKET master_socket, t_serv_config *s_conf)
 	SOCKET new_socket;
 	int address_size = sizeof(client_address);
 	int *clients_socket = NULL;
+	char buffer[1024] = {0};
+	char msg[1000] = {0};
 	int statu = 0;
 	int fdmax;
 	int sd;
@@ -21,10 +23,6 @@ int	app(SOCKET master_socket, t_serv_config *s_conf)
 
 	while (1)
 	{
-
-		char *buffer = malloc(sizeof(char) * 1024);
-		char *msg = malloc(sizeof(char) * 1000);
-
 		FD_ZERO(&readfs);
 		FD_SET(STDIN_FILENO, &readfs);
 		FD_SET(master_socket, &readfs);
@@ -46,7 +44,7 @@ int	app(SOCKET master_socket, t_serv_config *s_conf)
 		if (FD_ISSET(STDIN_FILENO, &readfs))
 		{
 			fgets(msg, sizeof(char) * 1000, stdin);
-			strcpy(buffer, "[Server] ");
+			strcpy(buffer, "$[server] ");
 			strcat(buffer, msg);
 			send_toall(clients_socket, 0, s_conf->max_client, buffer);
 			cleanMsg(buffer, msg);
@@ -73,8 +71,12 @@ int	app(SOCKET master_socket, t_serv_config *s_conf)
 				{
 					clients_socket[i] = new_socket;
 					printf("New client connected with socket %d from %s:%d, in slot %d\n", clients_socket[i], inet_ntoa(client_address.sin_addr), ntohs(client_address.sin_port), i);
-					strcpy(buffer, "Success connecting.\n");
+					strcpy(buffer, "$[server] Success connecting.\n");
+					printf("%s", buffer);
 					send_message(clients_socket[i], buffer);
+					cleanMsg(buffer, msg);
+					strcpy(buffer, "$[server] Someone connecting.\n");
+					send_toall(clients_socket, clients_socket[i], s_conf->max_client, buffer);
 					cleanMsg(buffer, msg);
 					break;
 				}
@@ -93,10 +95,14 @@ int	app(SOCKET master_socket, t_serv_config *s_conf)
 						shutdown(clients_socket[i], 2);
 						closesocket(clients_socket[i]);
 						clients_socket[i] = 0;
+						strcpy(buffer, "$[server] Someone disconnected.\n");
+						send_toall(clients_socket, 0, s_conf->max_client, buffer);
+						cleanMsg(buffer, msg);
 						break;
 					}
 					else
 					{
+						printf("%s\n", buffer);
 						send_toall(clients_socket, clients_socket[i], s_conf->max_client, buffer);
 						cleanMsg(buffer, msg);
 						break;
